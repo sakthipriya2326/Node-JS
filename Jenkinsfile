@@ -1,7 +1,7 @@
 pipeline {
     agent {
         dockerfile {
-            filename 'dockerfile'  
+            filename 'Dockerfile'  
             dir '.'               
         }
     }
@@ -25,11 +25,10 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                
                 echo 'Running app tests...'
-                sh 'npm start &'
-                sh 'sleep 5' 
-                sh 'curl http://localhost:3000' 
+                sh 'npm start &'      // Start app in background
+                sh 'sleep 5'          // Wait for app to start
+                sh 'curl http://localhost:3001' // ✅ Changed 3000 to 3001
             }
         }
 
