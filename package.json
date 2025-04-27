@@ -1,0 +1,23 @@
+{
+  "name": "node-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakthipriya2326/node.git"
+  },
+  "author": "Sakthi Priya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sakthipriya2326/node/issues"
+  },
+  "homepage": "https://github.com/sakthipriya2326/node#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
