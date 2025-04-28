@@ -1,41 +1,54 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'Dockerfile'  
-            dir '.'               
-        }
-    }
+    agent any
 
-    triggers {
-        githubPush() 
+    environment {
+        DOCKER_IMAGE = "node_image"
+        CONTAINER_NAME = "node_container"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                checkout scm  
+                // Clone the repository containing your Dockerfile and app code, explicitly using the 'main' branch
+                git branch: 'main', url: 'https://github.com/sakthipriya2326/Node-JS.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                sh 'npm install'  
+                script {
+                    // Build the Docker image
+                    bat 'docker build -t %DOCKER_IMAGE% .'
+                }
             }
         }
 
-        stage('Run Tests') {
+        stage('Stop and Remove Previous Container') {
             steps {
-                echo 'Running app tests...'
-                sh 'npm start &'
-                sh 'sleep 5'          
-                sh 'curl http://localhost:3001' 
+                script {
+                    // Stop and remove any running containers with the same name
+                    bat "docker stop %CONTAINER_NAME% || true"
+                    bat "docker rm %CONTAINER_NAME% || true"
+                }
             }
         }
 
-        stage('Build Complete') {
+        stage('Run Docker Container') {
             steps {
-                echo 'Build and test complete!'  
+                script {
+                    // Run the Docker container, map port 4000 of the container to 3000 of the host
+                    bat "docker run -d -p 3000:3000 --name %CONTAINER_NAME% %DOCKER_IMAGE%"
+                }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Docker container was successfully built and deployed.'
+        }
+        failure {
+            echo 'There was an error with the build process.'
         }
     }
 }
