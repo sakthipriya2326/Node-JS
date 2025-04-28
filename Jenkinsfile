@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "my-node-app"
-        CONTAINER_NAME = "my-node-container"
+        CONTAINER_NAME = "boring_jemison"
     }
 
     stages {
