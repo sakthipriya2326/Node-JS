@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "node_image"
-        CONTAINER_NAME = "node_container"
+        DOCKER_IMAGE = "my-node-app"
+        CONTAINER_NAME = "my-node-container"
     }
 
     stages {
