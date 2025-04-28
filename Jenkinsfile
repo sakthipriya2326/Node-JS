@@ -26,9 +26,15 @@ pipeline {
         stage('Stop and Remove Previous Container') {
             steps {
                 script {
-                    // Stop and remove any running containers with the same name
-                    bat "docker stop %CONTAINER_NAME% || true"
-                    bat "docker rm %CONTAINER_NAME% || true"
+                    // Check if the container exists and stop/remove it if it does
+                    bat '''
+                    if (docker ps -a --filter "name=%CONTAINER_NAME%" --format "{{.Names}}") {
+                        docker stop %CONTAINER_NAME%
+                        docker rm %CONTAINER_NAME%
+                    } else {
+                        exit 0
+                    }
+                    '''
                 }
             }
         }
